@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
+  <div class="container">
+    <div class="logo">
+      <a href="/">
+        <img
+          src="/img/logo.png"
+          alt="Logo"
+          width="30"
+          height="30"
+          style="margin-right: 10px; margin-top: -4px"
+        /></a>
+    </div>
+    <a href="/" class="navbar-brand">NoteApp</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+
+      </ul>
+      {{! add new UL on the right }}
+      <ul class="navbar-nav ml-auto">
+        {{#if user}}
+          <li class="nav-item dropdown">
+            <a
+              href="#"
+              class="nav-link dropdown-toggle"
+              data-toggle="dropdown"
+              id="navbarDropdownMeauLink"
+            >Notes</a>
+            {{! add selection links }}
+            <div class="dropdown-menu">
+              <a href="/ideas" class="dropdown-item">Notes</a>
+              <a href="/ideas/add" class="dropdown-item">Add Notes</a>
+              <a href="/ideas/records" class="dropdown-item">Show All Records</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="/users/profile" class="nav-link">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a href="/users/logout" class="nav-link">Logout</a>
+          </li>
+        {{else}}
+          <li class="nav-item">
+            <a href="/users/login" class="nav-link">Login</a>
+          </li>
+          <li class="nav-item">
+            <a href="/users/register" class="nav-link">Register</a>
+          </li>
+        {{/if}}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{{!           
+          <li class="nav-item dropdown">
+            <a
+              href="#"
+              class="nav-link downdown-toggle"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-expanded="false"
+            >Dropdown</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a href="#" class="dropdown-item">Action</a>
+              </li>
+              <li>
+                <a href="#" class="dropdown-item">Another action</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link disabled">Disabled</a>
+          </li>
+        </ul>
+        <form action="" class="d-flex">
+          <input
+            type="search"
+            class="form-control me-2"
+            placeholder="Search"
+            aria-label="Search"
+             <button class="btn btn-outline-success" type="submit">Search</button>
+          /> }}

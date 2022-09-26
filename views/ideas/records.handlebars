@@ -1,0 +1,26 @@
+{{#if records}}
+  <div>
+    <table class="table table-striped table-hovor">
+      <caption>List of all Notes</caption>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Details</th>
+          <th>Author</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each records}}
+          <tr>
+            <td>{{title}}</td>
+            <td>{{details}}</td>
+            <td>{{userInfo.name}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+  </div>
+{{else}}
+  <h2>No Records Listed</h2>
+{{/if}}
