@@ -85,6 +85,9 @@ import ensureAuthenticated from "./helpers/auth.js";
 app.use("/ideas", ensureAuthenticated, ideasRoute);
 app.use("/users", usersRoute);
 
+// import ensureAuthenticated from "./helpers/authProfile.js";
+// app.use("/users/profile",ensureAuthenticated, usersRoute);
+
 app.use("*", (req, res) => {
   res.status(404);
   res.render("404");

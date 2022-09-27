@@ -18,6 +18,10 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  avatar: {
+    data: { type: Buffer },
+    contentType: { type: String },
+  },
 });
 
 const User = mongoose.model("User", UserSchema);

@@ -2,6 +2,35 @@ import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import passport from "passport";
 import passportConfig from "../config/passportConfig.js";
+import multer from "multer";
+import * as fs from "fs";
+
+const storageSetting = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+export const uploadAvatar = multer({
+  storage: storageSetting,
+  fileFilter: (req, file, cb) => {
+    const mimetype = file.mimetype;
+    if (
+      mimetype === "image/png" ||
+      mimetype === "image/jpg" ||
+      mimetype === "image/jpeg" ||
+      mimetype === "image/gif"
+    ) {
+      cb(null, true);
+    } else {
+      req.flash("error_msg", "Wrong file type for avatar!");
+      cb(null, false);
+    }
+  },
+}).single("avatarUpload"); //single -> handlebars
 
 export const getReg = (req, res) => {
   res.render("users/register");
@@ -82,5 +111,52 @@ export const getProfile = (req, res) => {
   res.render("users/profile", {
     name: res.locals.user.name,
     email: res.locals.user.email,
+    avatar: res.locals.user.avatar,
   });
+
+  // if (res.locals.user) {
+  //   res.render("users/profile", {
+  //     name: res.locals.user.name,
+  //     email: res.locals.user.email,
+  //     avatar: res.locals.user.avatar,
+  //   });
+  // } else {
+  //   req.flash("error_msg", "Not Authorised");
+  //   res.redirect("/users/login");
+  // }
+};
+
+export const postProfile = (req, res) => {
+  User.findOne({ _id: res.locals.user._id }).then((user) => {
+    if (req.file) {
+      //readfilesync-> wait file
+      let avatarData = fs.readFileSync(req.file.path).toString("base64");
+      let avatarContentType = req.file.mimetype;
+
+      user.avatar.data = avatarData;
+      user.avatar.contentType = avatarContentType;
+
+      //delete the image once uploaded to db
+      fs.unlink(req.file.path, (err) => {
+        if (err) throw err;
+      });
+
+      user.save().then(() => {
+        req.flash("success_msg", "avatar uploaded!");
+        res.redirect("/users/profile");
+      });
+    } else {
+      req.flash("error_msg", "missing file!");
+      res.redirect("/users/profile");
+    }
+  });
+};
+
+export const deleteProfile = (req, res) => {
+  User.updateOne({ _id: res.locals.user._id }, { $unset: { avatar: "" } }).then(
+    () => {
+      req.flash("success_msg", "Avatar successfully deleted!");
+      res.redirect("/users/profile");
+    }
+  );
 };
